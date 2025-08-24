@@ -32,8 +32,8 @@ const Sidebar = () => {
               href={item.href}
               className={`flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors ${
                 isActive
-                  ? 'bg-primary text-primary-foreground font-semibold'
-                  : 'text-muted-foreground hover:bg-muted/50'
+                  ? 'bg-primary text-primary-foreground'
+                  : 'text-muted-foreground hover:bg-muted'
               }`}
             >
               <Icon name={item.icon} className="mr-3 h-5 w-5" />
@@ -47,8 +47,8 @@ const Sidebar = () => {
           href="/settings"
           className={`flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors ${
             pathname === '/settings'
-              ? 'bg-primary text-primary-foreground font-semibold'
-              : 'text-muted-foreground hover:bg-muted/50'
+              ? 'bg-primary text-primary-foreground'
+              : 'text-muted-foreground hover:bg-muted'
           }`}
         >
           <Settings className="mr-3 h-5 w-5" />

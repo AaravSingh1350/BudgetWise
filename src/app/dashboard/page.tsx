@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import type { Category, Expense } from '@/lib/types';
 import Sidebar from '@/components/layout/sidebar';
 import Header from '@/components/layout/header';
 import OverviewCards from '@/components/dashboard/overview-cards';
@@ -21,7 +20,6 @@ function Dashboard() {
     currency,
     addExpense,
     updateBudgets,
-    setCurrency,
     isLoading,
   } = useStore();
 
