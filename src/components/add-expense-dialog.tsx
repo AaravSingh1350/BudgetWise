@@ -40,6 +40,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import type { Category, Expense } from '@/lib/types';
+import { useEffect } from 'react';
 
 const formSchema = z.object({
   description: z.string().min(2, 'Description must be at least 2 characters.'),
@@ -54,6 +55,7 @@ type AddExpenseDialogProps = {
   categories: Category[];
   onAddExpense: (expense: Omit<Expense, 'id'>) => void;
   currency: string;
+  expenseToEdit?: Expense;
 };
 
 const AddExpenseDialog = ({
@@ -62,6 +64,7 @@ const AddExpenseDialog = ({
   categories,
   onAddExpense,
   currency,
+  expenseToEdit,
 }: AddExpenseDialogProps) => {
   const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -74,14 +77,32 @@ const AddExpenseDialog = ({
     },
   });
 
+  useEffect(() => {
+    if (expenseToEdit) {
+      form.reset({
+        description: expenseToEdit.description,
+        amount: expenseToEdit.amount,
+        categoryId: expenseToEdit.categoryId,
+        date: new Date(expenseToEdit.date),
+      });
+    } else {
+      form.reset({
+        description: '',
+        amount: 0,
+        categoryId: '',
+        date: new Date(),
+      });
+    }
+  }, [expenseToEdit, form]);
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     onAddExpense({
       ...values,
       date: format(values.date, 'yyyy-MM-dd'),
     });
     toast({
-      title: 'Expense Added',
-      description: `Successfully added ${values.description}.`,
+      title: expenseToEdit ? 'Expense Updated' : 'Expense Added',
+      description: `Successfully ${expenseToEdit ? 'updated' : 'added'} ${values.description}.`,
     });
     setIsOpen(false);
     form.reset();
@@ -98,9 +119,9 @@ const AddExpenseDialog = ({
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Add New Expense</DialogTitle>
+          <DialogTitle>{expenseToEdit ? 'Edit Expense' : 'Add New Expense'}</DialogTitle>
           <DialogDescription>
-            Log a new expense to track your spending.
+            {expenseToEdit ? 'Update the details of your expense.' : 'Log a new expense to track your spending.'}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -144,7 +165,7 @@ const AddExpenseDialog = ({
                   <FormLabel>Category</FormLabel>
                   <Select
                     onValueChange={field.onChange}
-                    defaultValue={field.value}
+                    value={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -212,7 +233,7 @@ const AddExpenseDialog = ({
               >
                 Cancel
               </Button>
-              <Button type="submit">Add Expense</Button>
+              <Button type="submit">{expenseToEdit ? 'Save Changes' : 'Add Expense'}</Button>
             </DialogFooter>
           </form>
         </Form>

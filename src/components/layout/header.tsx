@@ -10,15 +10,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import {-private_useStore as useStore } from '@/store';
 
 type HeaderProps = {
   onAddExpenseClick: () => void;
   onManageBudgetsClick: () => void;
-  currency: string;
-  onCurrencyChange: (currency: string) => void;
 };
 
-const Header = ({ onAddExpenseClick, onManageBudgetsClick, currency, onCurrencyChange }: HeaderProps) => {
+const Header = ({ onAddExpenseClick, onManageBudgetsClick }: HeaderProps) => {
+  const { currency, setCurrency } = useStore();
 
   return (
     <>
@@ -31,7 +31,7 @@ const Header = ({ onAddExpenseClick, onManageBudgetsClick, currency, onCurrencyC
             <h1 className="text-xl font-semibold">Dashboard</h1>
         </div>
         <div className="flex items-center gap-4">
-          <Select value={currency} onValueChange={onCurrencyChange}>
+          <Select value={currency} onValueChange={setCurrency}>
             <SelectTrigger className="w-[100px]">
               <SelectValue placeholder="Currency" />
             </SelectTrigger>

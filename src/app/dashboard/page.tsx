@@ -12,25 +12,20 @@ import RecentTransactions from '@/components/dashboard/recent-transactions';
 import AiInsights from '@/components/dashboard/ai-insights';
 import AddExpenseDialog from '@/components/add-expense-dialog';
 import ManageBudgetsDialog from '@/components/manage-budgets-dialog';
+import {-private_useStore as useStore } from '@/store';
 
 export default function DashboardPage() {
-  const [expenses, setExpenses] = useState<Expense[]>(initialExpenses);
-  const [categories, setCategories] = useState<Category[]>(initialCategories);
+  const { 
+    expenses, 
+    categories, 
+    currency,
+    addExpense,
+    updateBudgets,
+    setCurrency,
+  } = useStore();
+
   const [isAddExpenseOpen, setAddExpenseOpen] = useState(false);
   const [isManageBudgetsOpen, setManageBudgetsOpen] = useState(false);
-  const [currency, setCurrency] = useState('USD');
-
-  const addExpense = (expense: Omit<Expense, 'id'>) => {
-    const newExpense = {
-      ...expense,
-      id: `exp-${new Date().getTime()}`,
-    };
-    setExpenses(prevExpenses => [newExpense, ...prevExpenses]);
-  };
-  
-  const updateBudgets = (updatedCategories: Category[]) => {
-    setCategories(updatedCategories);
-  };
 
   const totalBudget = categories.reduce((sum, cat) => sum + cat.budget, 0);
   const totalSpending = expenses.reduce((sum, exp) => sum + exp.amount, 0);
@@ -53,8 +48,6 @@ export default function DashboardPage() {
         <Header 
           onAddExpenseClick={() => setAddExpenseOpen(true)}
           onManageBudgetsClick={() => setManageBudgetsOpen(true)}
-          currency={currency}
-          onCurrencyChange={setCurrency}
         />
         <main className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8 space-y-6">
           <OverviewCards totalBudget={totalBudget} totalSpending={totalSpending} currency={currency} />
