@@ -25,7 +25,7 @@ const Sidebar = () => {
       </div>
       <nav className="flex-1 px-4 py-6 space-y-2">
         {navItems.map((item) => {
-          const isActive = pathname.startsWith(item.href);
+          const isActive = pathname === item.href;
           return (
             <Link
               key={item.name}
@@ -43,13 +43,17 @@ const Sidebar = () => {
         })}
       </nav>
       <div className="px-4 py-6 border-t">
-        <a
-          href="#"
-          className="flex items-center px-4 py-2 text-sm font-medium rounded-md text-muted-foreground hover:bg-muted/50"
+        <Link
+          href="/settings"
+          className={`flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+            pathname === '/settings'
+              ? 'bg-primary/20 text-primary-foreground-dark font-semibold'
+              : 'text-muted-foreground hover:bg-muted/50'
+          }`}
         >
           <Settings className="mr-3 h-5 w-5" />
           <span>Settings</span>
-        </a>
+        </Link>
       </div>
     </aside>
   );
