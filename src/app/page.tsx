@@ -11,11 +11,13 @@ import CategoryPieChart from '@/components/dashboard/category-pie-chart';
 import RecentTransactions from '@/components/dashboard/recent-transactions';
 import AiInsights from '@/components/dashboard/ai-insights';
 import AddExpenseDialog from '@/components/add-expense-dialog';
+import ManageBudgetsDialog from '@/components/manage-budgets-dialog';
 
 export default function Home() {
   const [expenses, setExpenses] = useState<Expense[]>(initialExpenses);
   const [categories, setCategories] = useState<Category[]>(initialCategories);
   const [isAddExpenseOpen, setAddExpenseOpen] = useState(false);
+  const [isManageBudgetsOpen, setManageBudgetsOpen] = useState(false);
 
   const addExpense = (expense: Omit<Expense, 'id'>) => {
     const newExpense = {
@@ -23,6 +25,10 @@ export default function Home() {
       id: `exp-${new Date().getTime()}`,
     };
     setExpenses(prevExpenses => [newExpense, ...prevExpenses]);
+  };
+  
+  const updateBudgets = (updatedCategories: Category[]) => {
+    setCategories(updatedCategories);
   };
 
   const totalBudget = categories.reduce((sum, cat) => sum + cat.budget, 0);
@@ -43,7 +49,10 @@ export default function Home() {
     <div className="flex h-screen bg-background text-foreground overflow-hidden">
       <Sidebar />
       <div className="flex-1 flex flex-col">
-        <Header categories={categories} onAddExpenseClick={() => setAddExpenseOpen(true)} />
+        <Header 
+          onAddExpenseClick={() => setAddExpenseOpen(true)}
+          onManageBudgetsClick={() => setManageBudgetsOpen(true)}
+        />
         <main className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8 space-y-6">
           <OverviewCards totalBudget={totalBudget} totalSpending={totalSpending} />
 
@@ -67,6 +76,12 @@ export default function Home() {
         setIsOpen={setAddExpenseOpen}
         categories={categories}
         onAddExpense={addExpense}
+      />
+      <ManageBudgetsDialog
+        isOpen={isManageBudgetsOpen}
+        setIsOpen={setManageBudgetsOpen}
+        categories={categories}
+        onUpdateBudgets={updateBudgets}
       />
     </div>
   );
