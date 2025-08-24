@@ -52,7 +52,7 @@ const OverviewCards = ({
             <CardContent>
                 <div className="text-2xl font-bold">{card.amount}</div>
             </CardContent>
-            </Card>>
+            </Card>
         ))}
         </div>
         <Card className="mt-4">
