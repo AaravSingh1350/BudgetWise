@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { PlusCircle, Menu, Settings2 } from 'lucide-react';
+import { PlusCircle, Menu, Settings2, LogOut } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   Select,
@@ -11,14 +11,26 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useStore } from '@/store';
+import { useAuth } from '@/hooks/use-auth';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import Link from 'next/link';
+
 
 type HeaderProps = {
-  onAddExpenseClick: () => void;
-  onManageBudgetsClick: () => void;
+  onAddExpenseClick?: () => void;
+  onManageBudgetsClick?: () => void;
 };
 
 const Header = ({ onAddExpenseClick, onManageBudgetsClick }: HeaderProps) => {
   const { currency, setCurrency } = useStore();
+  const { user, signOut } = useAuth();
 
   return (
     <>
@@ -40,18 +52,40 @@ const Header = ({ onAddExpenseClick, onManageBudgetsClick }: HeaderProps) => {
               <SelectItem value="INR">INR (₹)</SelectItem>
             </SelectContent>
           </Select>
-          <Button variant="outline" onClick={onManageBudgetsClick}>
-            <Settings2 className="mr-2 h-4 w-4" />
-            Manage Budgets
-          </Button>
-          <Button onClick={onAddExpenseClick}>
-            <PlusCircle className="mr-2 h-4 w-4" />
-            Add Expense
-          </Button>
-          <Avatar className="h-9 w-9">
-             <AvatarImage src="https://placehold.co/100x100.png" alt="User" data-ai-hint="person avatar" />
-             <AvatarFallback>BW</AvatarFallback>
-          </Avatar>
+          {onManageBudgetsClick && (
+            <Button variant="outline" onClick={onManageBudgetsClick}>
+              <Settings2 className="mr-2 h-4 w-4" />
+              Manage Budgets
+            </Button>
+          )}
+          {onAddExpenseClick && (
+            <Button onClick={onAddExpenseClick}>
+              <PlusCircle className="mr-2 h-4 w-4" />
+              Add Expense
+            </Button>
+          )}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Avatar className="h-9 w-9 cursor-pointer">
+                 <AvatarImage src={user?.photoURL || "https://placehold.co/100x100.png"} alt={user?.displayName || "User"} data-ai-hint="person avatar" />
+                 <AvatarFallback>{user?.displayName?.[0] || 'U'}</AvatarFallback>
+              </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <Link href="/settings">
+                <DropdownMenuItem>
+                  <Settings2 className="mr-2 h-4 w-4" />
+                  <span>Settings</span>
+                </DropdownMenuItem>
+              </Link>
+              <DropdownMenuItem onClick={signOut}>
+                <LogOut className="mr-2 h-4 w-4" />
+                <span>Log out</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </header>
     </>

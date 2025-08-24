@@ -1,7 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-import { categories as initialCategories, expenses as initialExpenses } from '@/lib/data';
+import { useState, useEffect } from 'react';
 import type { Category, Expense } from '@/lib/types';
 import Sidebar from '@/components/layout/sidebar';
 import Header from '@/components/layout/header';
@@ -13,8 +12,10 @@ import AiInsights from '@/components/dashboard/ai-insights';
 import AddExpenseDialog from '@/components/add-expense-dialog';
 import ManageBudgetsDialog from '@/components/manage-budgets-dialog';
 import { useStore } from '@/store';
+import AuthGuard from '@/components/auth-guard';
+import { Skeleton } from '@/components/ui/skeleton';
 
-export default function DashboardPage() {
+function Dashboard() {
   const { 
     expenses, 
     categories, 
@@ -22,6 +23,7 @@ export default function DashboardPage() {
     addExpense,
     updateBudgets,
     setCurrency,
+    isLoading,
   } = useStore();
 
   const [isAddExpenseOpen, setAddExpenseOpen] = useState(false);
@@ -40,6 +42,31 @@ export default function DashboardPage() {
       spent,
     };
   });
+
+  if (isLoading) {
+    return (
+      <div className="flex h-screen bg-background text-foreground overflow-hidden">
+        <Sidebar />
+        <div className="flex-1 flex flex-col">
+          <Header 
+            onAddExpenseClick={() => {}}
+            onManageBudgetsClick={() => {}}
+          />
+          <main className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8 space-y-6">
+            <Skeleton className="h-40 w-full" />
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <Skeleton className="h-80 lg:col-span-2" />
+              <Skeleton className="h-80" />
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Skeleton className="h-80" />
+              <Skeleton className="h-80" />
+            </div>
+          </main>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="flex h-screen bg-background text-foreground overflow-hidden">
@@ -83,4 +110,12 @@ export default function DashboardPage() {
       />
     </div>
   );
+}
+
+export default function DashboardPage() {
+  return (
+    <AuthGuard>
+      <Dashboard />
+    </AuthGuard>
+  )
 }

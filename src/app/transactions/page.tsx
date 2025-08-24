@@ -25,9 +25,10 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import AuthGuard from '@/components/auth-guard';
 
 
-export default function TransactionsPage() {
+function Transactions() {
   const { expenses, categories, currency, addExpense, editExpense, deleteExpense } = useStore();
   const [isAddExpenseOpen, setAddExpenseOpen] = useState(false);
   const [editingExpense, setEditingExpense] = useState<Expense | undefined>(undefined);
@@ -141,4 +142,12 @@ export default function TransactionsPage() {
       />
     </div>
   );
+}
+
+export default function TransactionsPage() {
+  return (
+    <AuthGuard>
+      <Transactions />
+    </AuthGuard>
+  )
 }

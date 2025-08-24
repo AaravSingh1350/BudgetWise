@@ -10,8 +10,9 @@ import { formatCurrency } from '@/lib/utils';
 import Icon from '@/components/icons';
 import { useStore } from '@/store';
 import ManageBudgetsDialog from '@/components/manage-budgets-dialog';
+import AuthGuard from '@/components/auth-guard';
 
-export default function BudgetsPage() {
+function Budgets() {
   const { expenses, categories, currency, updateBudgets } = useStore();
   const [isManageBudgetsOpen, setManageBudgetsOpen] = useState(false);
 
@@ -77,4 +78,12 @@ export default function BudgetsPage() {
       />
     </div>
   );
+}
+
+export default function BudgetsPage() {
+  return (
+    <AuthGuard>
+      <Budgets />
+    </AuthGuard>
+  )
 }

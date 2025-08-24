@@ -20,8 +20,11 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import AuthGuard from '@/components/auth-guard';
+import { useAuth } from '@/hooks/use-auth';
 
-export default function SettingsPage() {
+function Settings() {
+  const { user } = useAuth();
   const { resetData } = useStore();
   const { toast } = useToast();
 
@@ -48,22 +51,22 @@ export default function SettingsPage() {
             <CardContent className="space-y-4">
               <div className="flex items-center gap-4">
                 <Avatar className="h-20 w-20">
-                  <AvatarImage src="https://placehold.co/100x100.png" alt="User" data-ai-hint="person avatar" />
-                  <AvatarFallback>BW</AvatarFallback>
+                  <AvatarImage src={user?.photoURL || "https://placehold.co/100x100.png"} alt={user?.displayName || "User"} data-ai-hint="person avatar" />
+                  <AvatarFallback>{user?.displayName?.[0] || 'U'}</AvatarFallback>
                 </Avatar>
-                <Button variant="outline">Change Photo</Button>
+                <Button variant="outline" disabled>Change Photo</Button>
               </div>
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="name">Name</Label>
-                  <Input id="name" defaultValue="BudgetWise User" />
+                  <Input id="name" defaultValue={user?.displayName || "BudgetWise User"} readOnly/>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" defaultValue="user@budgetwise.app" />
+                  <Input id="email" type="email" defaultValue={user?.email || ""} readOnly />
                 </div>
               </div>
-              <Button>Save Changes</Button>
+              <Button disabled>Save Changes</Button>
             </CardContent>
           </Card>
 
@@ -98,5 +101,13 @@ export default function SettingsPage() {
         </main>
       </div>
     </div>
+  );
+}
+
+export default function SettingsPage() {
+  return (
+    <AuthGuard>
+      <Settings />
+    </AuthGuard>
   );
 }

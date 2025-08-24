@@ -23,8 +23,9 @@ import {
 import { useStore } from '@/store';
 import ManageCategoryDialog from '@/components/manage-category-dialog';
 import type { Category } from '@/lib/types';
+import AuthGuard from '@/components/auth-guard';
 
-export default function CategoriesPage() {
+function Categories() {
   const { categories, deleteCategory, addCategory, editCategory } = useStore();
   const [isManageCategoryOpen, setManageCategoryOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState<Category | undefined>(undefined);
@@ -120,4 +121,12 @@ export default function CategoriesPage() {
       />
     </div>
   );
+}
+
+export default function CategoriesPage() {
+  return (
+    <AuthGuard>
+      <Categories />
+    </AuthGuard>
+  )
 }
