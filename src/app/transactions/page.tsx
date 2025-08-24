@@ -58,7 +58,6 @@ function Transactions() {
       <div className="flex-1 flex flex-col">
         <Header 
           onAddExpenseClick={() => setAddExpenseOpen(true)}
-          onManageBudgetsClick={() => {}}
         />
         <main className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8">
           <Card>
