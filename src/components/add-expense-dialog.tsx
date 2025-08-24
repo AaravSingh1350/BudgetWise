@@ -39,7 +39,7 @@ import {
 import { Calendar } from '@/components/ui/calendar';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
-import type { Category } from '@/lib/types';
+import type { Category, Expense } from '@/lib/types';
 
 const formSchema = z.object({
   description: z.string().min(2, 'Description must be at least 2 characters.'),
@@ -52,12 +52,14 @@ type AddExpenseDialogProps = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   categories: Category[];
+  onAddExpense: (expense: Omit<Expense, 'id'>) => void;
 };
 
 const AddExpenseDialog = ({
   isOpen,
   setIsOpen,
   categories,
+  onAddExpense,
 }: AddExpenseDialogProps) => {
   const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -71,7 +73,10 @@ const AddExpenseDialog = ({
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    onAddExpense({
+      ...values,
+      date: format(values.date, 'yyyy-MM-dd'),
+    });
     toast({
       title: 'Expense Added',
       description: `Successfully added ${values.description}.`,

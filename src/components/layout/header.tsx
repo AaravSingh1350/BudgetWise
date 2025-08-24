@@ -1,18 +1,16 @@
 'use client';
 
-import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { PlusCircle, Menu } from 'lucide-react';
-import AddExpenseDialog from '@/components/add-expense-dialog';
 import type { Category } from '@/lib/types';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 type HeaderProps = {
   categories: Category[];
+  onAddExpenseClick: () => void;
 };
 
-const Header = ({ categories }: HeaderProps) => {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+const Header = ({ categories, onAddExpenseClick }: HeaderProps) => {
 
   return (
     <>
@@ -25,7 +23,7 @@ const Header = ({ categories }: HeaderProps) => {
             <h1 className="text-xl font-semibold">Dashboard</h1>
         </div>
         <div className="flex items-center gap-4">
-          <Button onClick={() => setIsDialogOpen(true)}>
+          <Button onClick={onAddExpenseClick}>
             <PlusCircle className="mr-2 h-4 w-4" />
             Add Expense
           </Button>
@@ -35,11 +33,6 @@ const Header = ({ categories }: HeaderProps) => {
           </Avatar>
         </div>
       </header>
-      <AddExpenseDialog
-        isOpen={isDialogOpen}
-        setIsOpen={setIsDialogOpen}
-        categories={categories}
-      />
     </>
   );
 };
