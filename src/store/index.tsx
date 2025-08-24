@@ -34,7 +34,7 @@ type Store = ReturnType<typeof initializeStore>;
 
 const storeContext = createContext<Store | null>(null);
 
-const initializeStore = (
+export const initializeStore = (
   preloadedState: Partial<StoreState> = {}
 ) => {
   return createStore<StoreState>()(
