@@ -8,9 +8,10 @@ const firebaseConfig = {
   "storageBucket": "budgetwise-f7166.appspot.com",
   "apiKey": "AIzaSyDhSHNa3w8uLJ6hkIYlfEWKDgjWE7ZrluE",
   "authDomain": "budgetwise-f7166.firebaseapp.com",
-  "measurementId": "G-11V6221W4G",
-  "messagingSenderId": "223510455912"
+  "messagingSenderId": "223510455912",
+  "measurementId": "G-11V6221W4G"
 };
+
 
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const auth = getAuth(app);
