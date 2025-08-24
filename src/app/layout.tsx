@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
-import { StoreProvider } from '@/store';
+import StoreProvider from './store-provider';
 
 export const metadata: Metadata = {
   title: 'BudgetWise',
