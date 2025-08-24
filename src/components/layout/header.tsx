@@ -1,8 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { PlusCircle, Menu, Settings2, LogOut } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { PlusCircle, Menu, Settings2 } from 'lucide-react';
 import {
   Select,
   SelectContent,
@@ -11,16 +10,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useStore } from '@/store';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import Link from 'next/link';
-
 
 type HeaderProps = {
   onAddExpenseClick?: () => void;
