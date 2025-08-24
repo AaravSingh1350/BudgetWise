@@ -5,7 +5,7 @@ import { createStore, useStore as useZustandStore } from 'zustand';
 import type { Category, Expense } from '@/lib/types';
 import { categories as initialCategories } from '@/lib/data';
 import { useAuth } from '@/hooks/use-auth';
-import { db } from '@/lib/firebase';
+import { db, auth } from '@/lib/firebase';
 import {
   collection,
   doc,
