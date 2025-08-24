@@ -3,32 +3,27 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Icon from '@/components/icons';
-import { Settings } from 'lucide-react';
-import { useStore } from '@/store';
-import { SheetClose } from '../ui/sheet';
 
 const NavLink = ({ href, icon, name }: { href: string; icon: string; name: string }) => {
   const pathname = usePathname();
   const isActive = pathname === href;
 
   return (
-    <SheetClose asChild>
-      <Link
-        href={href}
-        className={`flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-          isActive
-            ? 'bg-primary text-primary-foreground'
-            : 'text-muted-foreground hover:bg-muted'
-        }`}
-      >
-        <Icon name={icon} className="mr-3 h-5 w-5" />
-        <span>{name}</span>
-      </Link>
-    </SheetClose>
+    <Link
+      href={href}
+      className={`flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+        isActive
+          ? 'bg-primary text-primary-foreground'
+          : 'text-muted-foreground hover:bg-muted'
+      }`}
+    >
+      <Icon name={icon} className="mr-3 h-5 w-5" />
+      <span>{name}</span>
+    </Link>
   );
 };
 
-const SidebarNav = () => {
+const MainSidebarNav = () => {
   const navItems = [
     { name: 'Dashboard', icon: 'LayoutDashboard', href: '/dashboard' },
     { name: 'Transactions', icon: 'Wallet', href: '/transactions' },
@@ -51,4 +46,4 @@ const SidebarNav = () => {
   );
 };
 
-export default SidebarNav;
+export default MainSidebarNav;

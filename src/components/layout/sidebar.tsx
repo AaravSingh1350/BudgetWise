@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { PiggyBank } from 'lucide-react';
-import SidebarNav from './sidebar-nav';
+import MainSidebarNav from './main-sidebar-nav';
 
 const Sidebar = () => {
   return (
@@ -14,7 +14,7 @@ const Sidebar = () => {
         </Link>
       </div>
       <div className="flex-1 px-4 py-6">
-        <SidebarNav />
+        <MainSidebarNav />
       </div>
     </aside>
   );
