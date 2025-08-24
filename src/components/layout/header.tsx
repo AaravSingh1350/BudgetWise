@@ -10,6 +10,10 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useStore } from '@/store';
+import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet';
+import Sidebar from './sidebar';
+import Link from 'next/link';
+import { PiggyBank } from 'lucide-react';
 
 type HeaderProps = {
   onAddExpenseClick?: () => void;
@@ -23,11 +27,26 @@ const Header = ({ onAddExpenseClick, onManageBudgetsClick }: HeaderProps) => {
     <>
       <header className="flex-shrink-0 h-16 bg-card border-b flex items-center justify-between px-4 sm:px-6 md:px-8">
         <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" className="md:hidden">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" className="md:hidden">
                 <Menu className="h-6 w-6" />
                 <span className="sr-only">Toggle menu</span>
-            </Button>
-            <h1 className="text-xl font-semibold">Dashboard</h1>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-64 p-0">
+               <div className="h-16 flex items-center px-6 border-b">
+                <Link href="/dashboard" className="flex items-center">
+                  <PiggyBank className="h-8 w-8 text-primary" />
+                  <h1 className="ml-3 text-xl font-bold">BudgetWise</h1>
+                </Link>
+              </div>
+              <div className="p-4">
+                <Sidebar />
+              </div>
+            </SheetContent>
+          </Sheet>
+          <h1 className="text-xl font-semibold hidden md:block">Dashboard</h1>
         </div>
         <div className="flex items-center gap-4">
           <Select value={currency} onValueChange={setCurrency}>
@@ -40,7 +59,7 @@ const Header = ({ onAddExpenseClick, onManageBudgetsClick }: HeaderProps) => {
             </SelectContent>
           </Select>
           {onManageBudgetsClick && (
-            <Button variant="outline" onClick={onManageBudgetsClick}>
+            <Button variant="outline" onClick={onManageBudgetsClick} className="hidden sm:inline-flex">
               <Settings2 className="mr-2 h-4 w-4" />
               Manage Budgets
             </Button>
