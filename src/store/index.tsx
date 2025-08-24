@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect, useMemo } from 'react';
 import { createStore, useStore as useZustandStore } from 'zustand';
 import type { Category, Expense } from '@/lib/types';
 import { categories as initialCategories } from '@/lib/data';
-import { useAuth } from '@/hooks/use-auth';
+import { useAuth } from '@/hooks/use-auth.tsx';
 import { db, auth } from '@/lib/firebase';
 import {
   collection,
@@ -100,7 +100,7 @@ export const initializeStore = () => {
       }
     },
     addExpense: async (expense) => {
-      const { user } = auth;
+      const user = auth.currentUser;
       if (!user) return;
       try {
         const newExpenseRef = await addDoc(collection(db, 'users', user.uid, 'expenses'), expense);
@@ -110,7 +110,7 @@ export const initializeStore = () => {
       }
     },
     editExpense: async (updatedExpense) => {
-      const { user } = auth;
+      const user = auth.currentUser;
       if (!user) return;
       const { id, ...expenseData } = updatedExpense;
       try {
@@ -126,7 +126,7 @@ export const initializeStore = () => {
       }
     },
     deleteExpense: async (id) => {
-      const { user } = auth;
+      const user = auth.currentUser;
       if (!user) return;
       try {
         await deleteDoc(doc(db, 'users', user.uid, 'expenses', id));
@@ -138,7 +138,7 @@ export const initializeStore = () => {
       }
     },
     addCategory: async (category) => {
-       const { user } = auth;
+       const user = auth.currentUser;
        if (!user) return;
        try {
         const newCategoryRef = await addDoc(collection(db, 'users', user.uid, 'categories'), category);
@@ -150,7 +150,7 @@ export const initializeStore = () => {
        }
     },
     editCategory: async (updatedCategory) => {
-      const { user } = auth;
+      const user = auth.currentUser;
       if (!user) return;
       const { id, ...categoryData } = updatedCategory;
       try {
@@ -165,7 +165,7 @@ export const initializeStore = () => {
       }
     },
     deleteCategory: async (id) => {
-       const { user } = auth;
+       const user = auth.currentUser;
        if (!user) return;
        try {
         await deleteDoc(doc(db, 'users', user.uid, 'categories', id));
@@ -180,7 +180,7 @@ export const initializeStore = () => {
        }
     },
     updateBudgets: async (updatedCategories) => {
-      const { user } = auth;
+      const user = auth.currentUser;
       if (!user) return;
       try {
         const batch = writeBatch(db);
@@ -196,7 +196,7 @@ export const initializeStore = () => {
       }
     },
     setCurrency: async (currency) => {
-      const { user } = auth;
+      const user = auth.currentUser;
       if (user) {
         try {
           await setDoc(doc(db, 'users', user.uid), { currency }, { merge: true });
@@ -207,7 +207,7 @@ export const initializeStore = () => {
       set({ currency });
     },
     resetData: async () => {
-      const { user } = auth;
+      const user = auth.currentUser;
       if (!user) return;
       set({ isLoading: true });
       try {
