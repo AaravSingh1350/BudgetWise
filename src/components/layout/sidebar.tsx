@@ -1,35 +1,46 @@
+'use client';
+
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import Icon from '@/components/icons';
-import { PiggyBank, LayoutDashboard, Wallet, Settings } from 'lucide-react';
+import { PiggyBank, Settings } from 'lucide-react';
 
 const Sidebar = () => {
+  const pathname = usePathname();
+
   const navItems = [
-    { name: 'Dashboard', icon: 'LayoutDashboard', href: '#', active: true },
-    { name: 'Transactions', icon: 'Wallet', href: '#', active: false },
-    { name: 'Budgets', icon: 'Target', href: '#', active: false },
-    { name: 'Categories', icon: 'GanttChartSquare', href: '#', active: false },
+    { name: 'Dashboard', icon: 'LayoutDashboard', href: '/dashboard' },
+    { name: 'Transactions', icon: 'Wallet', href: '/transactions' },
+    { name: 'Budgets', icon: 'Target', href: '/budgets' },
+    { name: 'Categories', icon: 'GanttChartSquare', href: '/categories' },
   ];
 
   return (
     <aside className="hidden md:flex flex-col w-64 bg-card border-r">
       <div className="h-16 flex items-center px-6 border-b">
-        <PiggyBank className="h-8 w-8 text-primary" />
-        <h1 className="ml-3 text-xl font-bold">BudgetWise</h1>
+        <Link href="/dashboard" className="flex items-center">
+          <PiggyBank className="h-8 w-8 text-primary" />
+          <h1 className="ml-3 text-xl font-bold">BudgetWise</h1>
+        </Link>
       </div>
       <nav className="flex-1 px-4 py-6 space-y-2">
-        {navItems.map((item) => (
-          <a
-            key={item.name}
-            href={item.href}
-            className={`flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-              item.active
-                ? 'bg-primary/20 text-primary-foreground-dark font-semibold'
-                : 'text-muted-foreground hover:bg-muted/50'
-            }`}
-          >
-            <Icon name={item.icon} className="mr-3 h-5 w-5" />
-            <span>{item.name}</span>
-          </a>
-        ))}
+        {navItems.map((item) => {
+          const isActive = pathname.startsWith(item.href);
+          return (
+            <Link
+              key={item.name}
+              href={item.href}
+              className={`flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+                isActive
+                  ? 'bg-primary/20 text-primary-foreground-dark font-semibold'
+                  : 'text-muted-foreground hover:bg-muted/50'
+              }`}
+            >
+              <Icon name={item.icon} className="mr-3 h-5 w-5" />
+              <span>{item.name}</span>
+            </Link>
+          );
+        })}
       </nav>
       <div className="px-4 py-6 border-t">
         <a
