@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { StoreProvider } from '@/store';
-import { AuthProvider } from '@/hooks/use-auth.tsx';
 
 export const metadata: Metadata = {
   title: 'BudgetWise',
@@ -25,11 +24,9 @@ export default function RootLayout({
         ></link>
       </head>
       <body className="font-body antialiased h-full">
-        <AuthProvider>
-          <StoreProvider>
-            {children}
-          </StoreProvider>
-        </AuthProvider>
+        <StoreProvider>
+          {children}
+        </StoreProvider>
         <Toaster />
       </body>
     </html>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import type { Category, Expense } from '@/lib/types';
 import Sidebar from '@/components/layout/sidebar';
 import Header from '@/components/layout/header';
@@ -12,7 +12,6 @@ import AiInsights from '@/components/dashboard/ai-insights';
 import AddExpenseDialog from '@/components/add-expense-dialog';
 import ManageBudgetsDialog from '@/components/manage-budgets-dialog';
 import { useStore } from '@/store';
-import AuthGuard from '@/components/auth-guard';
 import { Skeleton } from '@/components/ui/skeleton';
 
 function Dashboard() {
@@ -113,9 +112,5 @@ function Dashboard() {
 }
 
 export default function DashboardPage() {
-  return (
-    <AuthGuard>
-      <Dashboard />
-    </AuthGuard>
-  )
+  return <Dashboard />;
 }

@@ -20,11 +20,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import AuthGuard from '@/components/auth-guard';
-import { useAuth } from '@/hooks/use-auth.tsx';
 
 function Settings() {
-  const { user } = useAuth();
   const { resetData } = useStore();
   const { toast } = useToast();
 
@@ -51,19 +48,19 @@ function Settings() {
             <CardContent className="space-y-4">
               <div className="flex items-center gap-4">
                 <Avatar className="h-20 w-20">
-                  <AvatarImage src={user?.photoURL || "https://placehold.co/100x100.png"} alt={user?.displayName || "User"} data-ai-hint="person avatar" />
-                  <AvatarFallback>{user?.displayName?.[0] || 'U'}</AvatarFallback>
+                  <AvatarImage src={"https://placehold.co/100x100.png"} alt={"User"} data-ai-hint="person avatar" />
+                  <AvatarFallback>U</AvatarFallback>
                 </Avatar>
                 <Button variant="outline" disabled>Change Photo</Button>
               </div>
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="name">Name</Label>
-                  <Input id="name" defaultValue={user?.displayName || "BudgetWise User"} readOnly/>
+                  <Input id="name" defaultValue={"BudgetWise User"} readOnly/>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" defaultValue={user?.email || ""} readOnly />
+                  <Input id="email" type="email" defaultValue="user@example.com" readOnly />
                 </div>
               </div>
               <Button disabled>Save Changes</Button>
@@ -105,9 +102,5 @@ function Settings() {
 }
 
 export default function SettingsPage() {
-  return (
-    <AuthGuard>
-      <Settings />
-    </AuthGuard>
-  );
+  return <Settings />;
 }

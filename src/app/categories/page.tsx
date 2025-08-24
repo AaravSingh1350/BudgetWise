@@ -23,7 +23,6 @@ import {
 import { useStore } from '@/store';
 import ManageCategoryDialog from '@/components/manage-category-dialog';
 import type { Category } from '@/lib/types';
-import AuthGuard from '@/components/auth-guard';
 
 function Categories() {
   const { categories, deleteCategory, addCategory, editCategory } = useStore();
@@ -124,9 +123,5 @@ function Categories() {
 }
 
 export default function CategoriesPage() {
-  return (
-    <AuthGuard>
-      <Categories />
-    </AuthGuard>
-  )
+  return <Categories />;
 }

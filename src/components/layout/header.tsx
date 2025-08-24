@@ -11,7 +11,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useStore } from '@/store';
-import { useAuth } from '@/hooks/use-auth.tsx';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,7 +29,6 @@ type HeaderProps = {
 
 const Header = ({ onAddExpenseClick, onManageBudgetsClick }: HeaderProps) => {
   const { currency, setCurrency } = useStore();
-  const { user, signOut } = useAuth();
 
   return (
     <>
@@ -64,28 +62,6 @@ const Header = ({ onAddExpenseClick, onManageBudgetsClick }: HeaderProps) => {
               Add Expense
             </Button>
           )}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Avatar className="h-9 w-9 cursor-pointer">
-                 <AvatarImage src={user?.photoURL || "https://placehold.co/100x100.png"} alt={user?.displayName || "User"} data-ai-hint="person avatar" />
-                 <AvatarFallback>{user?.displayName?.[0] || 'U'}</AvatarFallback>
-              </Avatar>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <Link href="/settings">
-                <DropdownMenuItem>
-                  <Settings2 className="mr-2 h-4 w-4" />
-                  <span>Settings</span>
-                </DropdownMenuItem>
-              </Link>
-              <DropdownMenuItem onClick={signOut}>
-                <LogOut className="mr-2 h-4 w-4" />
-                <span>Log out</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
         </div>
       </header>
     </>

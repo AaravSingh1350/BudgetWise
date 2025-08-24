@@ -4,8 +4,7 @@ import { createContext, useContext, useEffect, useMemo } from 'react';
 import { createStore, useStore as useZustandStore } from 'zustand';
 import type { Category, Expense } from '@/lib/types';
 import { categories as initialCategories } from '@/lib/data';
-import { useAuth } from '@/hooks/use-auth.tsx';
-import { db, auth } from '@/lib/firebase';
+import { db } from '@/lib/firebase';
 import {
   collection,
   doc,
@@ -48,6 +47,9 @@ const getDefaultInitialState = () => ({
 type Store = ReturnType<typeof initializeStore>;
 
 const storeContext = createContext<Store | null>(null);
+
+// A mock user ID for non-authenticated users
+const MOCK_USER_ID = 'local-user';
 
 export const initializeStore = () => {
   return createStore<StoreState>((set, get) => ({
@@ -100,8 +102,7 @@ export const initializeStore = () => {
       }
     },
     addExpense: async (expense) => {
-      const user = auth.currentUser;
-      if (!user) return;
+      const user = { uid: MOCK_USER_ID };
       try {
         const newExpenseRef = await addDoc(collection(db, 'users', user.uid, 'expenses'), expense);
         set((state) => ({ expenses: [{ ...expense, id: newExpenseRef.id }, ...state.expenses] }));
@@ -110,8 +111,7 @@ export const initializeStore = () => {
       }
     },
     editExpense: async (updatedExpense) => {
-      const user = auth.currentUser;
-      if (!user) return;
+      const user = { uid: MOCK_USER_ID };
       const { id, ...expenseData } = updatedExpense;
       try {
         const expenseRef = doc(db, 'users', user.uid, 'expenses', id);
@@ -126,8 +126,7 @@ export const initializeStore = () => {
       }
     },
     deleteExpense: async (id) => {
-      const user = auth.currentUser;
-      if (!user) return;
+      const user = { uid: MOCK_USER_ID };
       try {
         await deleteDoc(doc(db, 'users', user.uid, 'expenses', id));
         set((state) => ({
@@ -138,8 +137,7 @@ export const initializeStore = () => {
       }
     },
     addCategory: async (category) => {
-       const user = auth.currentUser;
-       if (!user) return;
+       const user = { uid: MOCK_USER_ID };
        try {
         const newCategoryRef = await addDoc(collection(db, 'users', user.uid, 'categories'), category);
         set((state) => ({
@@ -150,8 +148,7 @@ export const initializeStore = () => {
        }
     },
     editCategory: async (updatedCategory) => {
-      const user = auth.currentUser;
-      if (!user) return;
+      const user = { uid: MOCK_USER_ID };
       const { id, ...categoryData } = updatedCategory;
       try {
         await updateDoc(doc(db, 'users', user.uid, 'categories', id), categoryData);
@@ -165,8 +162,7 @@ export const initializeStore = () => {
       }
     },
     deleteCategory: async (id) => {
-       const user = auth.currentUser;
-       if (!user) return;
+       const user = { uid: MOCK_USER_ID };
        try {
         await deleteDoc(doc(db, 'users', user.uid, 'categories', id));
         set((state) => ({
@@ -180,8 +176,7 @@ export const initializeStore = () => {
        }
     },
     updateBudgets: async (updatedCategories) => {
-      const user = auth.currentUser;
-      if (!user) return;
+      const user = { uid: MOCK_USER_ID };
       try {
         const batch = writeBatch(db);
         updatedCategories.forEach(cat => {
@@ -196,19 +191,16 @@ export const initializeStore = () => {
       }
     },
     setCurrency: async (currency) => {
-      const user = auth.currentUser;
-      if (user) {
-        try {
-          await setDoc(doc(db, 'users', user.uid), { currency }, { merge: true });
-        } catch (error) {
-          console.error("Error setting currency:", error);
-        }
+      const user = { uid: MOCK_USER_ID };
+      try {
+        await setDoc(doc(db, 'users', user.uid), { currency }, { merge: true });
+      } catch (error) {
+        console.error("Error setting currency:", error);
       }
       set({ currency });
     },
     resetData: async () => {
-      const user = auth.currentUser;
-      if (!user) return;
+      const user = { uid: MOCK_USER_ID };
       set({ isLoading: true });
       try {
         // Delete all expenses and categories
@@ -236,15 +228,10 @@ export const initializeStore = () => {
 
 export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   const store = useMemo(() => initializeStore(), []);
-  const { user } = useAuth();
 
   useEffect(() => {
-    if (user) {
-      store.getState()._fetchData(user.uid);
-    } else {
-      store.getState()._resetStore();
-    }
-  }, [user, store]);
+    store.getState()._fetchData(MOCK_USER_ID);
+  }, [store]);
 
   return <storeContext.Provider value={store}>{children}</storeContext.Provider>;
 };

@@ -25,7 +25,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import AuthGuard from '@/components/auth-guard';
 
 
 function Transactions() {
@@ -145,9 +144,5 @@ function Transactions() {
 }
 
 export default function TransactionsPage() {
-  return (
-    <AuthGuard>
-      <Transactions />
-    </AuthGuard>
-  )
+  return <Transactions />;
 }
