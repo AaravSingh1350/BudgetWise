@@ -32,7 +32,7 @@ const Sidebar = () => {
               href={item.href}
               className={`flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors ${
                 isActive
-                  ? 'bg-primary/20 text-primary-foreground-dark font-semibold'
+                  ? 'bg-primary text-primary-foreground font-semibold'
                   : 'text-muted-foreground hover:bg-muted/50'
               }`}
             >
@@ -47,7 +47,7 @@ const Sidebar = () => {
           href="/settings"
           className={`flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors ${
             pathname === '/settings'
-              ? 'bg-primary/20 text-primary-foreground-dark font-semibold'
+              ? 'bg-primary text-primary-foreground font-semibold'
               : 'text-muted-foreground hover:bg-muted/50'
           }`}
         >
