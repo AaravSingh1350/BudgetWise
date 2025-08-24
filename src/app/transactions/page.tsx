@@ -10,7 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/icons';
 import { format } from 'date-fns';
 import { formatCurrency } from '@/lib/utils';
-import {-private_useStore as useStore } from '@/store';
+import { useStore } from '@/store';
 import AddExpenseDialog from '@/components/add-expense-dialog';
 import type { Expense } from '@/lib/types';
 import { Edit, Trash2 } from 'lucide-react';

@@ -101,17 +101,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   return <storeContext.Provider value={store}>{children}</storeContext.Provider>;
 };
 
-export const useStore = <T,>(
-  selector: (state: StoreState) => T,
-): T => {
-  const store = useContext(storeContext);
-  if (!store) throw new Error('Missing StoreProvider');
-  return useZustandStore(store, selector);
-};
-
-// This is a temporary workaround for a bug in the build process
-// that doesn't play well with the `useStore` hook.
-export const -private_useStore = () => {
+export const useStore = () => {
   const store = useContext(storeContext);
   if (!store) throw new Error('Missing StoreProvider');
   return useZustandStore(store);

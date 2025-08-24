@@ -20,7 +20,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import {-private_useStore as useStore } from '@/store';
+import { useStore } from '@/store';
 import ManageCategoryDialog from '@/components/manage-category-dialog';
 import type { Category } from '@/lib/types';
 

@@ -12,7 +12,7 @@ import RecentTransactions from '@/components/dashboard/recent-transactions';
 import AiInsights from '@/components/dashboard/ai-insights';
 import AddExpenseDialog from '@/components/add-expense-dialog';
 import ManageBudgetsDialog from '@/components/manage-budgets-dialog';
-import {-private_useStore as useStore } from '@/store';
+import { useStore } from '@/store';
 
 export default function DashboardPage() {
   const { 

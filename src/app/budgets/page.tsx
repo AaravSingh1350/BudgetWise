@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { formatCurrency } from '@/lib/utils';
 import Icon from '@/components/icons';
-import {-private_useStore as useStore } from '@/store';
+import { useStore } from '@/store';
 import ManageBudgetsDialog from '@/components/manage-budgets-dialog';
 
 export default function BudgetsPage() {

@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import {-private_useStore as useStore } from '@/store';
+import { useStore } from '@/store';
 
 type HeaderProps = {
   onAddExpenseClick: () => void;
