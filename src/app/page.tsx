@@ -18,6 +18,7 @@ export default function Home() {
   const [categories, setCategories] = useState<Category[]>(initialCategories);
   const [isAddExpenseOpen, setAddExpenseOpen] = useState(false);
   const [isManageBudgetsOpen, setManageBudgetsOpen] = useState(false);
+  const [currency, setCurrency] = useState('USD');
 
   const addExpense = (expense: Omit<Expense, 'id'>) => {
     const newExpense = {
@@ -52,21 +53,23 @@ export default function Home() {
         <Header 
           onAddExpenseClick={() => setAddExpenseOpen(true)}
           onManageBudgetsClick={() => setManageBudgetsOpen(true)}
+          currency={currency}
+          onCurrencyChange={setCurrency}
         />
         <main className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8 space-y-6">
-          <OverviewCards totalBudget={totalBudget} totalSpending={totalSpending} />
+          <OverviewCards totalBudget={totalBudget} totalSpending={totalSpending} currency={currency} />
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2">
-              <SpendingChart data={spendingByCategory} />
+              <SpendingChart data={spendingByCategory} currency={currency} />
             </div>
             <div>
-              <CategoryPieChart data={spendingByCategory} />
+              <CategoryPieChart data={spendingByCategory} currency={currency} />
             </div>
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-             <RecentTransactions expenses={expenses} categories={categories} />
+             <RecentTransactions expenses={expenses} categories={categories} currency={currency} />
              <AiInsights />
           </div>
         </main>
@@ -76,12 +79,14 @@ export default function Home() {
         setIsOpen={setAddExpenseOpen}
         categories={categories}
         onAddExpense={addExpense}
+        currency={currency}
       />
       <ManageBudgetsDialog
         isOpen={isManageBudgetsOpen}
         setIsOpen={setManageBudgetsOpen}
         categories={categories}
         onUpdateBudgets={updateBudgets}
+        currency={currency}
       />
     </div>
   );

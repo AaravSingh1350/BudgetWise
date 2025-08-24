@@ -53,6 +53,7 @@ type AddExpenseDialogProps = {
   setIsOpen: (isOpen: boolean) => void;
   categories: Category[];
   onAddExpense: (expense: Omit<Expense, 'id'>) => void;
+  currency: string;
 };
 
 const AddExpenseDialog = ({
@@ -60,6 +61,7 @@ const AddExpenseDialog = ({
   setIsOpen,
   categories,
   onAddExpense,
+  currency,
 }: AddExpenseDialogProps) => {
   const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -84,6 +86,13 @@ const AddExpenseDialog = ({
     setIsOpen(false);
     form.reset();
   }
+
+  const currencySymbol = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).formatToParts(0).find(p => p.type === 'currency')?.value || '$';
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -116,7 +125,12 @@ const AddExpenseDialog = ({
                 <FormItem>
                   <FormLabel>Amount</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="0.00" {...field} />
+                    <div className="relative">
+                      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                        <span className="text-muted-foreground sm:text-sm">{currencySymbol}</span>
+                      </div>
+                      <Input type="number" placeholder="0.00" {...field} className="pl-7" />
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

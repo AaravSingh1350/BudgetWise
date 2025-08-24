@@ -3,6 +3,7 @@
 import { Pie, PieChart, ResponsiveContainer, Cell, Tooltip, Legend } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useMemo } from 'react';
+import { formatCurrency } from '@/lib/utils';
 
 type ChartData = {
   id: string;
@@ -12,6 +13,7 @@ type ChartData = {
 
 type CategoryPieChartProps = {
   data: ChartData[];
+  currency: string;
 };
 
 const COLORS = [
@@ -23,9 +25,20 @@ const COLORS = [
   'hsl(200, 90%, 70%)'
 ];
 
-const CategoryPieChart = ({ data }: CategoryPieChartProps) => {
+const CategoryPieChart = ({ data, currency }: CategoryPieChartProps) => {
   
   const chartData = useMemo(() => data.filter(item => item.spent > 0), [data]);
+
+  const CustomTooltip = ({ active, payload }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="p-2 bg-card border rounded-md shadow-md">
+          <p className="font-semibold">{`${payload[0].name}: ${formatCurrency(payload[0].value, currency)}`}</p>
+        </div>
+      );
+    }
+    return null;
+  };
 
   return (
     <Card>
@@ -39,11 +52,7 @@ const CategoryPieChart = ({ data }: CategoryPieChartProps) => {
             <PieChart>
               <Tooltip
                 cursor={{ fill: 'hsl(var(--muted))' }}
-                contentStyle={{
-                  backgroundColor: 'hsl(var(--card))',
-                  borderColor: 'hsl(var(--border))',
-                  borderRadius: 'var(--radius)',
-                }}
+                content={<CustomTooltip />}
               />
               <Pie
                 data={chartData}

@@ -3,13 +3,22 @@
 import { Button } from '@/components/ui/button';
 import { PlusCircle, Menu, Settings2 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 type HeaderProps = {
   onAddExpenseClick: () => void;
   onManageBudgetsClick: () => void;
+  currency: string;
+  onCurrencyChange: (currency: string) => void;
 };
 
-const Header = ({ onAddExpenseClick, onManageBudgetsClick }: HeaderProps) => {
+const Header = ({ onAddExpenseClick, onManageBudgetsClick, currency, onCurrencyChange }: HeaderProps) => {
 
   return (
     <>
@@ -22,6 +31,15 @@ const Header = ({ onAddExpenseClick, onManageBudgetsClick }: HeaderProps) => {
             <h1 className="text-xl font-semibold">Dashboard</h1>
         </div>
         <div className="flex items-center gap-4">
+          <Select value={currency} onValueChange={onCurrencyChange}>
+            <SelectTrigger className="w-[100px]">
+              <SelectValue placeholder="Currency" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="USD">USD ($)</SelectItem>
+              <SelectItem value="INR">INR (₹)</SelectItem>
+            </SelectContent>
+          </Select>
           <Button variant="outline" onClick={onManageBudgetsClick}>
             <Settings2 className="mr-2 h-4 w-4" />
             Manage Budgets

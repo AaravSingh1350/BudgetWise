@@ -1,22 +1,18 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DollarSign, Target, TrendingDown } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
+import { formatCurrency } from '@/lib/utils';
 
 type OverviewCardsProps = {
   totalBudget: number;
   totalSpending: number;
-};
-
-const formatCurrency = (amount: number) => {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(amount);
+  currency: string;
 };
 
 const OverviewCards = ({
   totalBudget,
   totalSpending,
+  currency,
 }: OverviewCardsProps) => {
   const remainingBudget = totalBudget - totalSpending;
   const spendingPercentage =
@@ -25,17 +21,17 @@ const OverviewCards = ({
   const cards = [
     {
       title: 'Total Budget',
-      amount: formatCurrency(totalBudget),
+      amount: formatCurrency(totalBudget, currency),
       icon: <Target className="h-5 w-5 text-muted-foreground" />,
     },
     {
       title: 'Total Spent',
-      amount: formatCurrency(totalSpending),
+      amount: formatCurrency(totalSpending, currency),
       icon: <TrendingDown className="h-5 w-5 text-muted-foreground" />,
     },
     {
       title: 'Remaining',
-      amount: formatCurrency(remainingBudget),
+      amount: formatCurrency(remainingBudget, currency),
       icon: <DollarSign className="h-5 w-5 text-muted-foreground" />,
     },
   ];

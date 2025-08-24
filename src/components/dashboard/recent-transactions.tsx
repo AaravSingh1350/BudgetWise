@@ -4,20 +4,15 @@ import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/icons';
 import type { Expense, Category } from '@/lib/types';
 import { format } from 'date-fns';
+import { formatCurrency } from '@/lib/utils';
 
 type RecentTransactionsProps = {
   expenses: Expense[];
   categories: Category[];
+  currency: string;
 };
 
-const formatCurrency = (amount: number) => {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(amount);
-};
-
-const RecentTransactions = ({ expenses, categories }: RecentTransactionsProps) => {
+const RecentTransactions = ({ expenses, categories, currency }: RecentTransactionsProps) => {
   const categoryMap = new Map(categories.map((cat) => [cat.id, cat]));
   const recentExpenses = expenses.slice(0, 5);
 
@@ -54,7 +49,7 @@ const RecentTransactions = ({ expenses, categories }: RecentTransactionsProps) =
                     )}
                   </TableCell>
                   <TableCell className="hidden md:table-cell">{format(new Date(expense.date), 'MMM d, yyyy')}</TableCell>
-                  <TableCell className="text-right">{formatCurrency(expense.amount)}</TableCell>
+                  <TableCell className="text-right">{formatCurrency(expense.amount, currency)}</TableCell>
                 </TableRow>
               );
             })}
