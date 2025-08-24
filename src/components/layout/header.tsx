@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/select';
 import { useStore } from '@/store';
 import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet';
-import Sidebar from './sidebar';
+import SidebarNav from './sidebar-nav';
 import Link from 'next/link';
 import { PiggyBank } from 'lucide-react';
 
@@ -41,7 +41,7 @@ const Header = ({ onAddExpenseClick, onManageBudgetsClick }: HeaderProps) => {
               </Link>
             </div>
             <div className="p-4">
-              <Sidebar />
+              <SidebarNav />
             </div>
           </SheetContent>
         </Sheet>
