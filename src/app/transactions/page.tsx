@@ -57,6 +57,7 @@ function Transactions() {
       <Sidebar />
       <div className="flex-1 flex flex-col">
         <Header 
+          title="Transactions"
           onAddExpenseClick={() => setAddExpenseOpen(true)}
         />
         <main className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8">

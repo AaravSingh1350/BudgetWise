@@ -33,6 +33,7 @@ function Budgets() {
       <Sidebar />
       <div className="flex-1 flex flex-col">
         <Header 
+          title="Budgets"
           onManageBudgetsClick={() => setManageBudgetsOpen(true)}
         />
         <main className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8">

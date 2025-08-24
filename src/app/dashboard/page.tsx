@@ -70,6 +70,7 @@ function Dashboard() {
       <Sidebar />
       <div className="flex-1 flex flex-col">
         <Header 
+          title="Dashboard"
           onAddExpenseClick={() => setAddExpenseOpen(true)}
           onManageBudgetsClick={() => setManageBudgetsOpen(true)}
         />

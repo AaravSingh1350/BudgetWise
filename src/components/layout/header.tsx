@@ -16,11 +16,12 @@ import Link from 'next/link';
 import { PiggyBank } from 'lucide-react';
 
 type HeaderProps = {
+  title: string;
   onAddExpenseClick?: () => void;
   onManageBudgetsClick?: () => void;
 };
 
-const Header = ({ onAddExpenseClick, onManageBudgetsClick }: HeaderProps) => {
+const Header = ({ title, onAddExpenseClick, onManageBudgetsClick }: HeaderProps) => {
   const { currency, setCurrency } = useStore();
 
   return (
@@ -45,7 +46,7 @@ const Header = ({ onAddExpenseClick, onManageBudgetsClick }: HeaderProps) => {
             </div>
           </SheetContent>
         </Sheet>
-        <h1 className="text-xl font-semibold hidden md:block">Dashboard</h1>
+        <h1 className="text-xl font-semibold hidden md:block">{title}</h1>
       </div>
       <div className="flex items-center gap-4">
         <Select value={currency} onValueChange={setCurrency}>

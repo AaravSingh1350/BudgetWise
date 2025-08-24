@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Icon from '@/components/icons';
-import { Settings } from 'lucide-react';
+import { Settings, Upload } from 'lucide-react';
 
 const SidebarNav = () => {
   const pathname = usePathname();
@@ -13,6 +13,7 @@ const SidebarNav = () => {
     { name: 'Transactions', icon: 'Wallet', href: '/transactions' },
     { name: 'Budgets', icon: 'Target', href: '/budgets' },
     { name: 'Categories', icon: 'GanttChartSquare', href: '/categories' },
+    { name: 'Import', icon: 'Upload', href: '/import' },
   ];
 
   return (
