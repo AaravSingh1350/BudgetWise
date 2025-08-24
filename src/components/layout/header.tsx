@@ -13,7 +13,7 @@ import { useStore } from '@/store';
 import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet';
 import SidebarNav from './sidebar-nav';
 import Link from 'next/link';
-import { PiggyBank } from 'lucide-react';
+import { BrainCircuit } from 'lucide-react';
 
 type HeaderProps = {
   title: string;
@@ -37,7 +37,7 @@ const Header = ({ title, onAddExpenseClick, onManageBudgetsClick }: HeaderProps)
           <SheetContent side="left" className="w-64 p-0">
              <div className="h-16 flex items-center px-6 border-b">
               <Link href="/dashboard" className="flex items-center">
-                <PiggyBank className="h-8 w-8 text-primary" />
+                <BrainCircuit className="h-8 w-8 text-primary" />
                 <h1 className="ml-3 text-xl font-bold">BudgetWise</h1>
               </Link>
             </div>
