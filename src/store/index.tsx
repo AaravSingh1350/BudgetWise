@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useEffect, useMemo } from 'react';
+import { createContext, useContext, useEffect, useMemo, useRef } from 'react';
 import { createStore, useStore as useZustandStore } from 'zustand';
 import type { Category, Expense } from '@/lib/types';
 import { categories as initialCategories } from '@/lib/data';
@@ -19,7 +19,6 @@ interface StoreState {
   updateBudgets: (updatedCategories: Category[]) => void;
   setCurrency: (currency: string) => void;
   resetData: () => void;
-  _fetchData: () => void;
 }
 
 const getDefaultInitialState = () => ({
@@ -33,148 +32,109 @@ type Store = ReturnType<typeof initializeStore>;
 
 const storeContext = createContext<Store | null>(null);
 
-// Helper to generate unique IDs
 const generateId = () => `id_${Math.random().toString(36).substr(2, 9)}`;
 
-export const initializeStore = () => {
-  return createStore<StoreState>((set, get) => ({
-    ...getDefaultInitialState(),
-    _fetchData: () => {
-      set({ isLoading: true });
-      // Simulate loading data from a local source
-      try {
-        const storedData = localStorage.getItem('budgetwise-data');
-        if (storedData) {
-          const { expenses, categories, currency } = JSON.parse(storedData);
-          set({ expenses, categories, currency });
-        } else {
-          // No stored data, use initial defaults
-          set({
-            expenses: [],
-            categories: initialCategories,
-            currency: 'USD',
-          });
+const STORAGE_KEY = 'budgetwise-data';
+
+const initializeStore = () => {
+  return createStore<StoreState>((set, get) => {
+    const a = {
+      ...getDefaultInitialState(),
+
+      // This is a private function and should not be used in the UI
+      _hydrate: () => {
+        try {
+          const storedData = localStorage.getItem(STORAGE_KEY);
+          if (storedData) {
+            const { expenses, categories, currency } = JSON.parse(storedData);
+            set({ expenses, categories, currency, isLoading: false });
+          } else {
+            set({ isLoading: false });
+          }
+        } catch (e) {
+          console.error('Could not hydrate state from localStorage', e);
+          set({ isLoading: false });
         }
-      } catch (error) {
-        console.error("Error fetching local data:", error);
+      },
+
+      addExpense: (expense) => {
+        const newExpense = { ...expense, id: generateId() };
+        set((state) => ({ expenses: [newExpense, ...state.expenses] }));
+      },
+      editExpense: (updatedExpense) => {
+        set((state) => ({
+          expenses: state.expenses.map((expense) =>
+            expense.id === updatedExpense.id ? updatedExpense : expense
+          ),
+        }));
+      },
+      deleteExpense: (id) => {
+        set((state) => ({
+          expenses: state.expenses.filter((expense) => expense.id !== id),
+        }));
+      },
+      addCategory: (category) => {
+        const newCategory = { ...category, id: generateId() };
+        set((state) => ({ categories: [...state.categories, newCategory] }));
+      },
+      editCategory: (updatedCategory) => {
+        set((state) => ({
+          categories: state.categories.map((category) =>
+            category.id === updatedCategory.id ? updatedCategory : category
+          ),
+        }));
+      },
+      deleteCategory: (id) => {
+        set((state) => ({
+          categories: state.categories.filter((category) => category.id !== id),
+          expenses: state.expenses.filter((expense) => expense.categoryId !== id),
+        }));
+      },
+      updateBudgets: (updatedCategories) => {
+        set({ categories: updatedCategories });
+      },
+      setCurrency: (currency) => {
+        set({ currency });
+      },
+      resetData: () => {
+        localStorage.removeItem(STORAGE_KEY);
         set(getDefaultInitialState());
-      } finally {
+        // Since we are resetting, we are no longer loading
         set({ isLoading: false });
-      }
-    },
-    addExpense: (expense) => {
-      const newExpense = { ...expense, id: generateId() };
-      set((state) => {
-        const newState = { ...state, expenses: [newExpense, ...state.expenses] };
-        localStorage.setItem('budgetwise-data', JSON.stringify({
-          expenses: newState.expenses,
-          categories: newState.categories,
-          currency: newState.currency,
-        }));
-        return { expenses: newState.expenses };
-      });
-    },
-    editExpense: (updatedExpense) => {
-      set((state) => {
-        const expenses = state.expenses.map((expense) =>
-          expense.id === updatedExpense.id ? updatedExpense : expense
-        );
-        localStorage.setItem('budgetwise-data', JSON.stringify({
-          expenses,
-          categories: state.categories,
-          currency: state.currency,
-        }));
-        return { expenses };
-      });
-    },
-    deleteExpense: (id) => {
-      set((state) => {
-        const expenses = state.expenses.filter((expense) => expense.id !== id);
-        localStorage.setItem('budgetwise-data', JSON.stringify({
-          expenses,
-          categories: state.categories,
-          currency: state.currency,
-        }));
-        return { expenses };
-      });
-    },
-    addCategory: (category) => {
-      const newCategory = { ...category, id: generateId() };
-       set((state) => {
-        const categories = [...state.categories, newCategory];
-         localStorage.setItem('budgetwise-data', JSON.stringify({
-          expenses: state.expenses,
-          categories,
-          currency: state.currency,
-        }));
-        return { categories };
-       });
-    },
-    editCategory: (updatedCategory) => {
-      set((state) => {
-        const categories = state.categories.map((category) =>
-          category.id === updatedCategory.id ? updatedCategory : category
-        );
-         localStorage.setItem('budgetwise-data', JSON.stringify({
-          expenses: state.expenses,
-          categories,
-          currency: state.currency,
-        }));
-        return { categories };
-      });
-    },
-    deleteCategory: (id) => {
-       set((state) => {
-         const categories = state.categories.filter((category) => category.id !== id);
-         const expenses = state.expenses.filter((expense) => expense.categoryId !== id);
-         localStorage.setItem('budgetwise-data', JSON.stringify({
-          expenses,
-          categories,
-          currency: state.currency,
-        }));
-        return { categories, expenses };
-       });
-    },
-    updateBudgets: (updatedCategories) => {
-      set((state) => {
-        localStorage.setItem('budgetwise-data', JSON.stringify({
-          expenses: state.expenses,
-          categories: updatedCategories,
-          currency: state.currency,
-        }));
-        return { categories: updatedCategories };
-      });
-    },
-    setCurrency: (currency) => {
-      set((state) => {
-        localStorage.setItem('budgetwise-data', JSON.stringify({
-          expenses: state.expenses,
-          categories: state.categories,
-          currency,
-        }));
-        return { currency };
-      });
-    },
-    resetData: () => {
-      localStorage.removeItem('budgetwise-data');
-      set(getDefaultInitialState());
-      get()._fetchData();
-    },
-  }));
+      },
+    };
+    return a;
+  });
 };
 
 export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
-  const store = useMemo(() => initializeStore(), []);
+  const storeRef = useRef<Store>();
+  if (!storeRef.current) {
+    storeRef.current = initializeStore();
+  }
 
   useEffect(() => {
-    store.getState()._fetchData();
-  }, [store]);
+    const store = storeRef.current!;
+    // @ts-ignore private method
+    store.getState()._hydrate();
 
-  return <storeContext.Provider value={store}>{children}</storeContext.Provider>;
+    const unsubscribe = store.subscribe((state) => {
+      const { expenses, categories, currency } = state;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ expenses, categories, currency }));
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  return (
+    <storeContext.Provider value={storeRef.current}>
+      {children}
+    </storeContext.Provider>
+  );
 };
 
 export const useStore = () => {
   const store = useContext(storeContext);
   if (!store) throw new Error('Missing StoreProvider');
   return useZustandStore(store);
-}
+};
