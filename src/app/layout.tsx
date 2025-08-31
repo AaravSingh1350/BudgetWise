@@ -22,6 +22,7 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
           rel="stylesheet"
         ></link>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3703887186622638" crossOrigin="anonymous"></script>
       </head>
       <body className="font-body antialiased h-full">
         <StoreProvider>

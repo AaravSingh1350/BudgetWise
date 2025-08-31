@@ -16,6 +16,15 @@ const Sidebar = () => {
       <div className="flex-1 px-4 py-6">
         <MainSidebarNav />
       </div>
+      <div className="px-4 pb-6">
+        <ins className="adsbygoogle"
+          style={{ display: 'block' }}
+          data-ad-client="ca-pub-3703887186622638"
+          data-ad-slot="sidebar-ad"
+          data-ad-format="auto"
+          data-full-width-responsive="true"></ins>
+        <script>{`(adsbygoogle = window.adsbygoogle || []).push({});`}</script>
+      </div>
     </aside>
   );
 };

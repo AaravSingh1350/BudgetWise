@@ -7,7 +7,6 @@ import OverviewCards from '@/components/dashboard/overview-cards';
 import SpendingChart from '@/components/dashboard/spending-chart';
 import CategoryPieChart from '@/components/dashboard/category-pie-chart';
 import RecentTransactions from '@/components/dashboard/recent-transactions';
-import AiInsights from '@/components/dashboard/ai-insights';
 import AddExpenseDialog from '@/components/add-expense-dialog';
 import ManageBudgetsDialog from '@/components/manage-budgets-dialog';
 import { useStore } from '@/store';
@@ -88,7 +87,17 @@ function Dashboard() {
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
              <RecentTransactions expenses={expenses} categories={categories} currency={currency} />
-             <AiInsights />
+          </div>
+
+          {/* Dashboard Bottom Ad */}
+          <div className="mt-8 flex justify-center">
+            <ins className="adsbygoogle"
+              style={{ display: 'block' }}
+              data-ad-client="ca-pub-3703887186622638"
+              data-ad-slot="dashboard-bottom-ad"
+              data-ad-format="auto"
+              data-full-width-responsive="true"></ins>
+            <script>{`(adsbygoogle = window.adsbygoogle || []).push({});`}</script>
           </div>
         </main>
       </div>

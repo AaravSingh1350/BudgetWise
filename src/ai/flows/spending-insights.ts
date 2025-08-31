@@ -27,21 +27,6 @@ export async function getSpendingInsights(input: SpendingInsightsInput): Promise
   return spendingInsightsFlow(input);
 }
 
-const prompt = ai.definePrompt({
-  name: 'spendingInsightsPrompt',
-  input: {schema: SpendingInsightsInputSchema},
-  output: {schema: SpendingInsightsOutputSchema},
-  prompt: `You are a personal finance advisor. Analyze the user's spending data and provide personalized insights and budget adjustment suggestions.
-
-Spending Data: {{{spendingData}}}
-Current Budget: {{{currentBudget}}}
-
-Identify spending trends, including any unexpected charges or areas where the user is overspending. Suggest realistic budget adjustments based on these trends and the user's current budget goals.
-
-Format your repsonse for the user to easily understand.
-`,
-});
-
 const spendingInsightsFlow = ai.defineFlow(
   {
     name: 'spendingInsightsFlow',

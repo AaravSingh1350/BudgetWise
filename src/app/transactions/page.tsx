@@ -25,6 +25,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { utils as XLSXUtils, writeFile as XLSXWriteFile } from 'xlsx';
 
 function TransactionsContent() {
   const { expenses, categories, currency, addExpense, editExpense, deleteExpense } = useStore();
@@ -51,6 +52,19 @@ function TransactionsContent() {
     setAddExpenseOpen(false);
   }
 
+  const handleExportExcel = () => {
+    const data = expenses.map((expense) => ({
+      Description: expense.description,
+      Category: categoryMap.get(expense.categoryId)?.name || '',
+      Date: expense.date,
+      Amount: expense.amount,
+    }));
+    const worksheet = XLSXUtils.json_to_sheet(data);
+    const workbook = XLSXUtils.book_new();
+    XLSXUtils.book_append_sheet(workbook, worksheet, 'Transactions');
+    XLSXWriteFile(workbook, 'transactions.xlsx');
+  };
+
   return (
     <>
       <div className="flex h-screen bg-background text-foreground overflow-hidden">
@@ -67,7 +81,10 @@ function TransactionsContent() {
                   <CardTitle>Transactions</CardTitle>
                   <CardDescription>View and manage your transactions.</CardDescription>
                 </div>
-                <Button onClick={() => setAddExpenseOpen(true)}>Add Transaction</Button>
+                <div className="flex gap-2">
+                  <Button onClick={handleExportExcel} variant="outline">Export to Excel</Button>
+                  <Button onClick={() => setAddExpenseOpen(true)}>Add Transaction</Button>
+                </div>
               </CardHeader>
               <CardContent>
                  <Table>
