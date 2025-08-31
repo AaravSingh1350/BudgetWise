@@ -97,7 +97,7 @@ function Dashboard() {
               data-ad-slot="dashboard-bottom-ad"
               data-ad-format="auto"
               data-full-width-responsive="true"></ins>
-            <script>{`(adsbygoogle = window.adsbygoogle || []).push({});`}</script>
+            <script dangerouslySetInnerHTML={{ __html: `(adsbygoogle = window.adsbygoogle || []).push({});` }} />
           </div>
         </main>
       </div>
