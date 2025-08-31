@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import StoreProvider from './store-provider';
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: 'BudgetWise',
@@ -29,6 +30,7 @@ export default function RootLayout({
           {children}
         </StoreProvider>
         <Toaster />
+        <Analytics />
       </body>
     </html>
   );
