@@ -24,6 +24,21 @@ export default function RootLayout({
           rel="stylesheet"
         ></link>
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3703887186622638" crossOrigin="anonymous"></script>
+        <script type="text/javascript" src="//www.highperformanceformat.com/dba615ce1261057944411b555d0bb909/invoke.js"></script>
+        <script
+          type="text/javascript"
+          dangerouslySetInnerHTML={{
+            __html: `
+              atOptions = {
+                'key' : 'dba615ce1261057944411b555d0bb909',
+                'format' : 'iframe',
+                'height' : 300,
+                'width' : 160,
+                'params' : {}
+              };
+            `,
+          }}
+        />
       </head>
       <body className="font-body antialiased h-full">
         <StoreProvider>
@@ -31,16 +46,6 @@ export default function RootLayout({
         </StoreProvider>
         <Toaster />
         <Analytics />
-        <script type="text/javascript">
-          atOptions = {
-            'key' : 'dba615ce1261057944411b555d0bb909',
-            'format' : 'iframe',
-            'height' : 300,
-            'width' : 160,
-            'params' : {}
-          };
-        </script>
-        <script type="text/javascript" src="//www.highperformanceformat.com/dba615ce1261057944411b555d0bb909/invoke.js"></script>
       </body>
     </html>
   );

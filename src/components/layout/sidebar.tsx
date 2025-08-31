@@ -17,16 +17,28 @@ const Sidebar = () => {
         <MainSidebarNav />
       </div>
       <div className="px-4 pb-6">
-        <ins className="adsbygoogle"
+        <ins
+          className="adsbygoogle"
           style={{ display: 'block' }}
           data-ad-client="ca-pub-3703887186622638"
           data-ad-slot="sidebar-ad"
           data-ad-format="auto"
-          data-full-width-responsive="true"></ins>
-        <script>{`(adsbygoogle = window.adsbygoogle || []).push({});`}</script>
+          data-full-width-responsive="true"
+        ></ins>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(adsbygoogle = window.adsbygoogle || []).push({});`,
+          }}
+        />
       </div>
-      <script async="async" data-cfasync="false" src="//pl27549057.revenuecpmgate.com/9e3830232b9c0ccdea300ebfff4ef19a/invoke.js"></script>
-      <div id="container-9e3830232b9c0ccdea300ebfff4ef19a"></div>
+      <div className="px-4 pb-6">
+        <script
+          async
+          data-cfasync="false"
+          src="//pl27549057.revenuecpmgate.com/9e3830232b9c0ccdea300ebfff4ef19a/invoke.js"
+        ></script>
+        <div id="container-9e3830232b9c0ccdea300ebfff4ef19a"></div>
+      </div>
     </aside>
   );
 };
