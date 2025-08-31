@@ -31,6 +31,16 @@ export default function RootLayout({
         </StoreProvider>
         <Toaster />
         <Analytics />
+        <script type="text/javascript">
+          atOptions = {
+            'key' : 'dba615ce1261057944411b555d0bb909',
+            'format' : 'iframe',
+            'height' : 300,
+            'width' : 160,
+            'params' : {}
+          };
+        </script>
+        <script type="text/javascript" src="//www.highperformanceformat.com/dba615ce1261057944411b555d0bb909/invoke.js"></script>
       </body>
     </html>
   );

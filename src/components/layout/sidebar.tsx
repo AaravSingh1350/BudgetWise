@@ -25,6 +25,8 @@ const Sidebar = () => {
           data-full-width-responsive="true"></ins>
         <script>{`(adsbygoogle = window.adsbygoogle || []).push({});`}</script>
       </div>
+      <script async="async" data-cfasync="false" src="//pl27549057.revenuecpmgate.com/9e3830232b9c0ccdea300ebfff4ef19a/invoke.js"></script>
+      <div id="container-9e3830232b9c0ccdea300ebfff4ef19a"></div>
     </aside>
   );
 };
